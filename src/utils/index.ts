@@ -1,0 +1,1 @@
+export { applyRoutes } from './routes';
