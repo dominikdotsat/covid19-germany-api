@@ -22,6 +22,9 @@ const HOURLY_CRON = process.env.HOURLY_CRON || '0 * * * *';
 const EVERY_MORNING_CRON =  process.env.EVERY_MORNING_CRON || '0 9 * * *';
 
 crawlData();
-schedule.scheduleJob(HOURLY_CRON, () => crawlData); // crawl hourly
-// sendToSlack(); // no initial, during dev
-schedule.scheduleJob(EVERY_MORNING_CRON, () => sendToSlack); // send msg to slack, everyday in the morning
+console.log('Scheduling update of data: ',HOURLY_CRON);
+schedule.scheduleJob(HOURLY_CRON, () => crawlData()); // crawl hourly
+sendToSlack(); // no initial, during dev
+console.log('Scheduling slack update: ',EVERY_MORNING_CRON);
+schedule.scheduleJob(EVERY_MORNING_CRON, () => sendToSlack()); // send msg to slack, everyday in the morning
+
