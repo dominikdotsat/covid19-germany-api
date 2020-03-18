@@ -19,7 +19,7 @@ server.listen(PORT, () => {
 });
 
 const HOURLY_CRON = process.env.HOURLY_CRON || '0 * * * *';
-const EVERY_MORNING_CRON =  process.env.EVERY_MORNING_CRON || '0 4 * * *'; // est 4am => cet 9am
+const EVERY_MORNING_CRON =  process.env.EVERY_MORNING_CRON || '0 8 * * *'; // cet 9am
 
 crawlData();
 console.log('Scheduling update of data: ',HOURLY_CRON);

@@ -15,10 +15,12 @@ export const sendToSlack = async () => {
     }
     const data = {
         infected: currentRegion.infected.toString(),
+        infectedDifference: currentRegion.infectedDifference.toString(),
         death: currentRegion.death.toString(),
         region: currentRegion.name,
         updatedAt: lastUpdated.updateDate,
         infectedAll: allRegion.infected.toString(),
+        infectedAllDifference: allRegion.infectedDifference.toString(),
         deathAll: allRegion.death.toString()
     };
     try {

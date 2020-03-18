@@ -2,7 +2,6 @@ const axios = require('axios').default;
 const cheerio = require('cheerio');
 const db = require('quick.db');
 
-var pharentesisExtraction = /\(([^)]+)\)/;
 var dateTimeExtraction = /((\d+)[-.\/](\d+)[-.\/](\d+), (\d+):(\d+))/;
 
 export const crawlData = async () => {
@@ -45,13 +44,16 @@ function parseData(data: string): IRegion {
     const total: RegionData = {
         name: 'Total',
         infected: 0,
+        infectedDifference: '0',
         death: 0
     };
 
     const html = cheerio.load(data);
     html('#main table tbody tr').filter((_: number, el: CheerioElement) => {
         const region = el.children[0].children[0].data;
-        let confirmedCase = el.children[1].children[0].data;
+        let confirmedCase = el.children[1]?.children[0]?.data || '0';
+        let confirmedDiff = el.children[2]?.children[0]?.data || '0';
+        let deathCase = el.children[4]?.children[0]?.data || '0';
 
         if (
             region === undefined ||
@@ -63,16 +65,26 @@ function parseData(data: string): IRegion {
         confirmedCase = confirmedCase.replace('.', '');
         results[regionCode[region]] = {
             name: region,
-            infected: parseInt(confirmedCase.split(' ')[0], 10),
+            infected: parseInt(confirmedCase, 10),
+            infectedDifference: confirmedDiff,
             death: parseInt(
-                pharentesisExtraction.exec(confirmedCase)?.[1] || '0',
+                deathCase,
                 10
             )
         };
         total.infected += results[regionCode[region]].infected;
         total.death += results[regionCode[region]].death;
+        total.infectedDifference = (
+                parseInt(total.infectedDifference, 10) +
+                parseInt(results[regionCode[region]].infectedDifference)
+            ).toString();
     });
+
+    total.infectedDifference = parseInt(total.infectedDifference, 10) > 0 ?
+        `+${total.infectedDifference}` :
+        total.infectedDifference;
     results['DE-ALL'] = total;
+
     return results;
 }
 function parseLastUpdated(data: string): UpdateData {
@@ -104,6 +116,7 @@ interface RegionData {
     name: string;
     infected: number;
     death: number;
+    infectedDifference: string;
     // recovered: string; // TODO: add when they communicate it
 }
 
