@@ -75,8 +75,8 @@ function parseData(data: string): IRegion {
         total.infected += results[regionCode[region]].infected;
         total.death += results[regionCode[region]].death;
         total.infectedDifference = (
-                parseInt(total.infectedDifference, 10) +
-                parseInt(results[regionCode[region]].infectedDifference)
+                parseInt(total.infectedDifference.replace('.', ''), 10) +
+                parseInt(results[regionCode[region]].infectedDifference.replace('.', ''), 10)
             ).toString();
     });
 
@@ -126,20 +126,20 @@ interface UpdateData {
 }
 
 const regionCode: any = {
-    'Baden-Württemberg': 'DE-BW',
+    'Baden-Württem­berg': 'DE-BW',
     Bayern: 'DE-BY',
     Berlin: 'DE-BE',
     Brandenburg: 'DE-BB',
     Bremen: 'DE-HB',
     Hamburg: 'DE-HH',
     Hessen: 'DE-HE',
-    'Mecklenburg-Vorpommern': 'DE-MV',
+    'Mecklenburg-Vor­pommern': 'DE-MV',
     Niedersachsen: 'DE-NI',
-    'Nordrhein-Westfalen': 'DE-NW',
-    'Rheinland-Pfalz': 'DE-RP',
+    'Nordrhein-West­falen': 'DE-NW',
+    'Rhein­land-Pfalz': 'DE-RP',
     Saarland: 'DE-SL',
     Sachsen: 'DE-SN',
     'Sachsen-Anhalt': 'DE-ST',
-    'Schleswig-Holstein': 'DE-SH',
+    'Schles­wig-Holstein': 'DE-SH',
     Thüringen: 'DE-TH'
 };
