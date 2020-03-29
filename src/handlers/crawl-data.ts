@@ -94,7 +94,7 @@ function parseLastUpdated(data: string): UpdateData {
     };
 
     const html = cheerio.load(data);
-    html('#main h2:contains("Fallzahlen in Deutschland")+p').filter(
+    html('#main h3:contains("Fallzahlen in Deutschland")+p').filter(
         (_: number, el: CheerioElement) => {
             const updatedAt = el.children[0].data;
             if (updatedAt === undefined) {
