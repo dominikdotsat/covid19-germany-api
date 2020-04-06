@@ -50,11 +50,15 @@ function parseData(data: string): IRegion {
 
     const html = cheerio.load(data);
     html('#main table tbody tr').filter((_: number, el: CheerioElement) => {
-        const region = el.children[0].children[0].data;
+        const region = el.children[0].children.map((el)=>{
+            if(el.type !== 'text') {
+                return '';
+            }
+            return (el.data || '').trim();
+        }).join('');
         let confirmedCase = el.children[1]?.children[0]?.data || '0';
         let confirmedDiff = el.children[2]?.children[0]?.data || '0';
         let deathCase = el.children[4]?.children[0]?.data || '0';
-
         if (
             region === undefined ||
             confirmedCase === undefined ||
@@ -134,6 +138,7 @@ const regionCode: any = {
     Hamburg: 'DE-HH',
     Hessen: 'DE-HE',
     'Mecklenburg-Vor­pommern': 'DE-MV',
+    'Mecklenburg-West Pomerania': 'DE-WP',
     Niedersachsen: 'DE-NI',
     'Nordrhein-West­falen': 'DE-NW',
     'Rhein­land-Pfalz': 'DE-RP',
